@@ -1,4 +1,35 @@
-import {ADD_TODO,TOGGLE_TODO} from '../actions/actionTypes';
+import {ADD_TODO,FETCH_TODOS_FAILURE,FETCH_TODOS_REQUEST,FETCH_TODOS_SUCCESS,TOGGLE_TODO} from '../actions/actionTypes';
+const initialState={
+    isFetching:false,
+    error:null,
+    data:[]
+}
+const reducer=(state=initialState,action)=>{
+    switch(action.type){
+        case FETCH_TODOS_REQUEST:
+            return {
+                ...state, 
+                isFetching:true
+            }
+        case FETCH_TODOS_SUCCESS:
+            return {
+                ...state,
+                data:action.data,
+                isFetching:false
+            }
+        case FETCH_TODOS_FAILURE:
+            return {
+                ...state,
+                error:action.error,
+                isFetching:false
+                }
+        default:
+            return {
+                ...state,
+                data:todos(state.data,action)
+            }
+    }
+}
 /**
  * todo的reducer只需管理todos的状态
  * @param {*} state 
@@ -22,4 +53,4 @@ const todos=(state=[],action)=>{
             return state;
     }
 }
-export default todos;
+export default reducer;

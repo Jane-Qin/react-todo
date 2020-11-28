@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { toggleTodo } from "../actions/index";
+import { toggleTodo, fetchTodos } from "../actions";
 import TodoList from "../components/TodoList";
 
 const getVisibleTodos = (todos, filter) => {
@@ -14,12 +14,17 @@ const getVisibleTodos = (todos, filter) => {
       return new Error("unknow filter" + filter);
   }
 };
-//将redux中的state映射到组件的props上 ，state是redux的全局state
-const mapStateToProps = (state) =>( {
-    todos: getVisibleTodos(state.todos, state.filter)
-  });
-//将redux中的action映射到组件的props,组件就可以根据props上的方法调用redux中的action
-const mapDispatchToProps = (dispatch) =>( {
-    toggleTodo: (id) => dispatch(toggleTodo(id))
-  })
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+
+const mapStateToProps = state => ({
+  todos: getVisibleTodos(state.todos.data, state.filter)
+});
+
+const mapDispatchToProps = dispatch => ({
+  toggleTodo: id => dispatch(toggleTodo(id)),
+  fetchTodos: () => dispatch(fetchTodos())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList);
