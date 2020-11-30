@@ -7,9 +7,10 @@ import {createStore,applyMiddleware,compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';  //处理异步action的中间件
 import {Provider} from 'react-redux'; //用provider传递store
 import rootReducer from './reducers/index';
+import loggerMiddleware from "./middlewares/logger";  // //引入自己写的中间件
 
 const composeEnhancers=window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__||compose;
-const store=createStore(rootReducer,composeEnhancers(applyMiddleware(thunkMiddleware))); 
+const store=createStore(rootReducer,composeEnhancers(applyMiddleware(thunkMiddleware,loggerMiddleware))); 
 //根组件上注入store
 ReactDOM.render(
   <Provider store={store}>
